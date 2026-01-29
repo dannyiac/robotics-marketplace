@@ -1,0 +1,1256 @@
+[
+  {
+    "id": 11,
+    "name": "Proteus",
+    "vendor": "Amazon Robotics",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_11/20260127_114843_ARP_front.jpg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_11/20260127_114843_ARP_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_11/20260127_121946_ARP_right.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_11/20260127_114843_ARP_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_11/20260127_114843_ARP_front.jpg"
+    ],
+    "category": "AMRs",
+    "type": "Warehouse Automation",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Warehouse Automation from Amazon Robotics. Released in 2022. 2 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Stretch",
+    "vendor": "Boston Dynamics",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_12/20260127_122159_BDS_front.jpg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_12/20260127_122159_BDS_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_12/20260127_122208_BDS_side.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_12/20260127_122218_BDS_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_12/20260127_122159_BDS_front.jpg"
+    ],
+    "category": "AMRs",
+    "type": "Warehouse Unloading",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Warehouse Unloading from Boston Dynamics. Released in 2022. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Freight 1500",
+    "vendor": "Fetch Robotics",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_8/20260127_122422_Fetch_front.png",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_8/20260127_122422_Fetch_front.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_8/20260127_122450_Fetch_side.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_8/20260127_122458_Fetch_inuse.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_8/20260127_122422_Fetch_front.png"
+    ],
+    "category": "AMRs",
+    "type": "Material Handling",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Material Handling from Fetch Robotics. Released in 2019. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "LocusBot",
+    "vendor": "Locus Robotics",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_10/20260127_123035_Locus_front.jpg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_10/20260127_123035_Locus_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_10/20260127_123044_Locus_side.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_10/20260127_123054_Locus_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_10/20260127_123035_Locus_front.jpg"
+    ],
+    "category": "AMRs",
+    "type": "Warehouse Picking",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Warehouse Picking from Locus Robotics. Released in 2020. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "MiR250",
+    "vendor": "MiR",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_6/20260127_123302_MiR_front.jpeg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_6/20260127_123302_MiR_front.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_6/20260127_123310_MiR_side.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_6/20260127_123317_MiR_inuse.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_6/20260127_123302_MiR_front.jpeg"
+    ],
+    "category": "AMRs",
+    "type": "Logistics Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Logistics Robot from MiR. Released in 2020. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "MiR600",
+    "vendor": "MiR",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_7/20260127_123443_MiR6_front.webp",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_7/20260127_123443_MiR6_front.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_7/20260127_123450_MiR6_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_7/20260127_123459_MiR6_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_7/20260127_123506_MiR6_detail.webp"
+    ],
+    "category": "AMRs",
+    "type": "Heavy-duty Logistics",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Heavy-duty Logistics from MiR. Released in 2021. 4 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "OTTO 1500",
+    "vendor": "OTTO Motors",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_9/20260127_123701_Otto_front.png",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_9/20260127_123701_Otto_front.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_9/20260127_123707_Otto_side.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_9/20260127_123714_Otto_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/amrs/robot_9/20260127_123721_Otto_detail.webp"
+    ],
+    "category": "AMRs",
+    "type": "Material Transport",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\udd16",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Material Transport from OTTO Motors. Released in 2018. 4 photo(s) available.",
+    "specs": {
+      "payload": "5-600 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "2 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "EVO II Pro",
+    "vendor": "Autel Robotics",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_5/20260127_123854_EVO_front.webp",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_5/20260127_123854_EVO_front.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_5/20260127_123914_EVO_side.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_5/20260127_123922_EVO_in_use.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_5/20260127_123929_EVO_detail.webp"
+    ],
+    "category": "Drones",
+    "type": "Quadcopter",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83d\ude81",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Quadcopter from Autel Robotics. Released in 2020. 4 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Air 3",
+    "vendor": "DJI",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_2/20260127_124218_DJI_front.jpg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_2/20260127_124218_DJI_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_2/20260127_124224_DJI_side.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_2/20260127_124231_DJI_inuse.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_2/20260127_124218_DJI_front.jpg"
+    ],
+    "category": "Drones",
+    "type": "Quadcopter",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83d\ude81",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Quadcopter from DJI. Released in 2023. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Mavic 3",
+    "vendor": "DJI",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_1/20260127_124338_DJI_M_front.jpeg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_1/20260127_124338_DJI_M_front.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_1/20260127_124344_DJI_M_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_1/20260127_124355_DJI_M_inuse.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_1/20260127_124338_DJI_M_front.jpeg"
+    ],
+    "category": "Drones",
+    "type": "Quadcopter",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83d\ude81",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Quadcopter from DJI. Released in 2021. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "ANAFI USA",
+    "vendor": "Parrot",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_4/20260127_160210_Parrot_front.jpeg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_4/20260127_160210_Parrot_front.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_4/20260127_160216_Parrot_side.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_4/20260127_160225_Parrot_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_4/20260127_160210_Parrot_front.jpeg"
+    ],
+    "category": "Drones",
+    "type": "Quadcopter",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83d\ude81",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Quadcopter from Parrot. Released in 2020. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Skydio 2+",
+    "vendor": "Skydio",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_3/20260127_160337_Skydio_front.webp",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_3/20260127_160337_Skydio_front.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_3/20260127_160345_Skydio_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_3/20260127_160353_Skydio_inuse.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/drones/robot_3/20260127_160337_Skydio_front.webp"
+    ],
+    "category": "Drones",
+    "type": "Quadcopter",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83d\ude81",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Quadcopter from Skydio. Released in 2021. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "IRB 6700",
+    "vendor": "ABB",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_18/20260127_160841_ABB_side.png",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_18/20260127_160841_ABB_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_18/20260127_160850_ABB_inuse.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_18/20260127_160841_ABB_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_18/20260127_160841_ABB_side.png"
+    ],
+    "category": "Robotic Arms",
+    "type": "Industrial Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Industrial Robot from ABB. Released in 2019. 2 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "YuMi",
+    "vendor": "ABB",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_17/20260127_161112_ABB_Yumi_front.jpg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_17/20260127_161112_ABB_Yumi_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_17/20260127_161119_ABB_Yumi_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_17/20260127_161112_ABB_Yumi_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_17/20260127_161112_ABB_Yumi_front.jpg"
+    ],
+    "category": "Robotic Arms",
+    "type": "Dual-Arm Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Dual-Arm Collaborative Robot from ABB. Released in 2015. 2 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "M1013",
+    "vendor": "Doosan Robotics",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_22/20260127_161419_Doosan_side.png",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_22/20260127_161419_Doosan_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_22/20260127_161429_Doosan_inuse.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_22/20260127_161419_Doosan_side.png",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_22/20260127_161419_Doosan_side.png"
+    ],
+    "category": "Robotic Arms",
+    "type": "Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Collaborative Robot from Doosan Robotics. Released in 2020. 2 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "CR-15iA",
+    "vendor": "FANUC",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://via.placeholder.com/400x300?text=FANUC+CR-15iA",
+    "images": [
+      "https://via.placeholder.com/400x300?text=FANUC+CR-15iA",
+      "https://via.placeholder.com/400x300?text=FANUC+CR-15iA",
+      "https://via.placeholder.com/400x300?text=FANUC+CR-15iA",
+      "https://via.placeholder.com/400x300?text=FANUC+CR-15iA"
+    ],
+    "category": "Robotic Arms",
+    "type": "Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Collaborative Robot from FANUC. Released in 2020. 0 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 20,
+    "name": "M-2000iA",
+    "vendor": "FANUC",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_20/20260127_161655_Fanuc_2000_front.jpg",
+    "images": [
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_20/20260127_161655_Fanuc_2000_front.jpg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_20/20260127_161702_Fanuc_2000_side.jpeg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_20/20260127_161708_Fanuc_2000_inuse.webp",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/photos/robotic-arms/robot_20/20260127_161655_Fanuc_2000_front.jpg"
+    ],
+    "category": "Robotic Arms",
+    "type": "Heavy-duty Industrial Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Heavy-duty Industrial Robot from FANUC. Released in 2018. 3 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "KR QUANTEC",
+    "vendor": "KUKA",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://via.placeholder.com/400x300?text=KUKA+KR QUANTEC",
+    "images": [
+      "https://via.placeholder.com/400x300?text=KUKA+KR QUANTEC",
+      "https://via.placeholder.com/400x300?text=KUKA+KR QUANTEC",
+      "https://via.placeholder.com/400x300?text=KUKA+KR QUANTEC",
+      "https://via.placeholder.com/400x300?text=KUKA+KR QUANTEC"
+    ],
+    "category": "Robotic Arms",
+    "type": "Industrial Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Industrial Robot from KUKA. Released in 2020. 0 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 15,
+    "name": "LBR iiwa 7",
+    "vendor": "KUKA",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://via.placeholder.com/400x300?text=KUKA+LBR iiwa 7",
+    "images": [
+      "https://via.placeholder.com/400x300?text=KUKA+LBR iiwa 7",
+      "https://via.placeholder.com/400x300?text=KUKA+LBR iiwa 7",
+      "https://via.placeholder.com/400x300?text=KUKA+LBR iiwa 7",
+      "https://via.placeholder.com/400x300?text=KUKA+LBR iiwa 7"
+    ],
+    "category": "Robotic Arms",
+    "type": "Sensitive Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Sensitive Collaborative Robot from KUKA. Released in 2018. 0 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "UR10e",
+    "vendor": "Universal Robots",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://via.placeholder.com/400x300?text=Universal Robots+UR10e",
+    "images": [
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR10e",
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR10e",
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR10e",
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR10e"
+    ],
+    "category": "Robotic Arms",
+    "type": "Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Collaborative Robot from Universal Robots. Released in 2019. 0 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 13,
+    "name": "UR5e",
+    "vendor": "Universal Robots",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://via.placeholder.com/400x300?text=Universal Robots+UR5e",
+    "images": [
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR5e",
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR5e",
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR5e",
+      "https://via.placeholder.com/400x300?text=Universal Robots+UR5e"
+    ],
+    "category": "Robotic Arms",
+    "type": "Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Collaborative Robot from Universal Robots. Released in 2019. 0 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  },
+  {
+    "id": 21,
+    "name": "HC10DT",
+    "vendor": "Yaskawa",
+    "price": "Contact for Quote",
+    "priceNote": "Custom pricing based on requirements",
+    "image": "https://via.placeholder.com/400x300?text=Yaskawa+HC10DT",
+    "images": [
+      "https://via.placeholder.com/400x300?text=Yaskawa+HC10DT",
+      "https://via.placeholder.com/400x300?text=Yaskawa+HC10DT",
+      "https://via.placeholder.com/400x300?text=Yaskawa+HC10DT",
+      "https://via.placeholder.com/400x300?text=Yaskawa+HC10DT"
+    ],
+    "category": "Robotic Arms",
+    "type": "Collaborative Robot",
+    "rating": 4.8,
+    "reviews": 124,
+    "emoji": "\ud83e\uddbe",
+    "badge": "",
+    "inStock": true,
+    "verified": true,
+    "description": "Professional Collaborative Robot from Yaskawa. Released in 2019. 0 photo(s) available.",
+    "specs": {
+      "payload": "5-15 kg",
+      "battery": "30 min - 12 hrs",
+      "autonomy": "Advanced Navigation",
+      "speed": "20 m/s"
+    },
+    "features": [
+      {
+        "icon": "\ud83c\udfaf",
+        "title": "Precision",
+        "desc": "High accuracy operations"
+      },
+      {
+        "icon": "\ud83d\udd12",
+        "title": "Safety",
+        "desc": "Advanced safety systems"
+      },
+      {
+        "icon": "\ud83d\udcca",
+        "title": "Analytics",
+        "desc": "Real-time monitoring"
+      },
+      {
+        "icon": "\ud83d\udd27",
+        "title": "Maintenance",
+        "desc": "Easy to service"
+      }
+    ],
+    "applications": [
+      "Manufacturing",
+      "Warehousing",
+      "Logistics",
+      "Inspection"
+    ]
+  }
+]

@@ -1,0 +1,2871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket - Enterprise Autonomous Robotics Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --primary-dark: #E05D00;
+            --secondary: #0A1628;
+            --surface: #F8F9FA;
+            --surface-alt: #FFFFFF;
+            --text: #1A1D29;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            
+            --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: 'IBM Plex Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: var(--secondary);
+            color: white;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 0;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--mono);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .logo::before {
+            content: "◆";
+            font-size: 1.8rem;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-middle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            max-width: 800px;
+        }
+
+        .btn-filters {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-filters:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--primary);
+        }
+
+        .btn-filters.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .filter-icon {
+            font-size: 1.1rem;
+        }
+
+        .filter-badge {
+            background: white;
+            color: var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1.2rem 0.8rem 3rem;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            transition: all 0.3s;
+            font-family: var(--sans);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .search-bar::before {
+            content: "🔍";
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface-alt);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-suggestions.active {
+            display: block;
+        }
+
+        .search-category {
+            padding: 0.8rem 1rem 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-family: var(--mono);
+            border-top: 1px solid var(--border);
+        }
+
+        .search-category:first-child {
+            border-top: none;
+        }
+
+        .search-suggestion-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-left: 3px solid transparent;
+        }
+
+        .search-suggestion-item:hover {
+            background: var(--surface);
+            border-left-color: var(--primary);
+        }
+
+        .suggestion-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .suggestion-content {
+            flex: 1;
+        }
+
+        .suggestion-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.2rem;
+        }
+
+        .suggestion-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .search-no-results {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* Filter Dropdown Panel */
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface-alt);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 999;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .filter-dropdown.active {
+            max-height: 600px;
+            opacity: 1;
+            overflow-y: auto;
+        }
+
+        .filter-dropdown-content {
+            padding: 2rem;
+        }
+
+        .filter-dropdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .filter-dropdown-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-clear-filters {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-clear-filters:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-done-filters {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-done-filters:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Filters Grid in Dropdown */
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            height: auto;
+            position: static;
+            box-shadow: none;
+        }
+
+        .filter-section {
+            margin-bottom: 0;
+        }
+
+        .filter-section h3 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            font-family: var(--mono);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+            cursor: pointer;
+            padding: 0.3rem 0;
+            transition: all 0.2s;
+        }
+
+        .filter-option:hover {
+            padding-left: 0.3rem;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .filter-option label {
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .filter-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: var(--mono);
+        }
+
+        /* Active Filters Bar */
+        .active-filters-bar {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: none;
+        }
+
+        .active-filters-bar.visible {
+            display: block;
+        }
+
+        .active-filters-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .active-filters-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: var(--mono);
+        }
+
+        .active-filters-list {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .filter-chip {
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover {
+            background: var(--primary-dark);
+        }
+
+        .filter-chip-remove {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            line-height: 1;
+        }
+
+        .filter-chip-remove:hover {
+            opacity: 1;
+        }
+
+        .btn-clear-all {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: var(--sans);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-clear-all:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .price-inputs input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: var(--mono);
+        }
+
+        .range-slider {
+            margin-top: 0.8rem;
+        }
+
+        .range-slider input {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            font-family: var(--mono);
+        }
+
+        /* Product Grid */
+        .products {
+            animation: fadeIn 0.5s ease-out;
+            padding: 2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-count {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .sort-dropdown {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface-alt);
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: var(--surface-alt);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            animation: cardIn 0.5s ease-out backwards;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.05s; }
+        .product-card:nth-child(2) { animation-delay: 0.1s; }
+        .product-card:nth-child(3) { animation-delay: 0.15s; }
+        .product-card:nth-child(4) { animation-delay: 0.2s; }
+        .product-card:nth-child(5) { animation-delay: 0.25s; }
+        .product-card:nth-child(6) { animation-delay: 0.3s; }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .product-image {
+            height: 220px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a2642 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-image::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.02) 10px,
+                rgba(255,255,255,0.02) 20px
+            );
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-badge.verified {
+            background: var(--success);
+        }
+
+        .product-info {
+            padding: 1.2rem;
+        }
+
+        .product-vendor {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .product-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .spec {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .spec-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: var(--mono);
+        }
+
+        .spec-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stars {
+            color: var(--warning);
+            font-size: 0.9rem;
+        }
+
+        .rating-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: var(--mono);
+        }
+
+        .price-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-view {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+        }
+
+        .btn-view:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(255,255,255,0.03) 50px,
+                    rgba(255,255,255,0.03) 100px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(255,255,255,0.03) 50px,
+                    rgba(255,255,255,0.03) 100px
+                );
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        .banner h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .banner p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        /* Product Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--surface-alt);
+            max-width: 1200px;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            animation: slideUp 0.4s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--secondary);
+            color: white;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .modal-image-section {
+            position: relative;
+        }
+
+        .modal-main-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a2642 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .modal-main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-thumbnails {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .modal-thumbnail {
+            height: 80px;
+            background: var(--surface);
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .modal-thumbnail:hover {
+            border-color: var(--primary);
+        }
+
+        .modal-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-details-section h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .vendor-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+        }
+
+        .vendor-logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .vendor-details h3 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+            color: var(--text);
+        }
+
+        .vendor-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .price-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-section .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: white;
+        }
+
+        .price-section .price-note {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .price-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .btn-quote, .btn-contact {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .btn-quote {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-quote:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+        }
+
+        .btn-contact {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-contact:hover {
+            background: #0d1d35;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .spec-item {
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+        }
+
+        .spec-item .spec-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+            font-family: var(--mono);
+        }
+
+        .spec-item .spec-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-section p, .detail-section ul {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .detail-section ul {
+            padding-left: 1.5rem;
+        }
+
+        .detail-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .rating-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: var(--mono);
+        }
+
+        .rating-breakdown {
+            flex: 1;
+        }
+
+        .rating-stars-large {
+            font-size: 1.5rem;
+            color: var(--warning);
+            margin-bottom: 0.3rem;
+        }
+
+        .rating-count {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .features-list {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+
+        .feature-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .service-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .service-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .service-badge span {
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .filters {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .header-middle {
+                order: 3;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            .filter-dropdown.active {
+                max-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .banner h1 {
+                font-size: 1.8rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-main-image {
+                height: 300px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-filters {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .active-filters-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .active-filters-list {
+                width: 100%;
+            }
+        }
+
+        .modal-main-image {
+            position: relative;
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 3rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .image-nav:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .image-nav-prev {
+            left: 1rem;
+        }
+
+        .image-nav-next {
+            right: 1rem;
+        }
+
+        .modal-thumbnail {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .modal-thumbnail:hover {
+            opacity: 0.8;
+        }
+
+        .modal-thumbnail.active {
+            opacity: 1;
+            border-color: var(--primary);
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-success {
+            padding: 1rem;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            color: #155724;
+            text-align: center;
+        }
+
+        .contact-cta-container {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">ROBOMARKET</div>
+            <div class="header-middle">
+                <button class="btn-filters" id="filtersBtn" onclick="toggleFilterDropdown()">
+                    <span class="filter-icon">⚙</span>
+                    <span>Filters</span>
+                    <span class="filter-badge" id="filterBadge" style="display: none;">0</span>
+                </button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search robots, drones, arms, AMRs..." id="searchInput">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+            </div>
+            <nav>
+                <a href="#browse">Browse</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#support">Support</a>
+                <button class="btn-primary">Sell Your Robots</button>
+            </nav>
+        </div>
+        
+        <!-- Filter Dropdown Panel -->
+        <div class="filter-dropdown" id="filterDropdown">
+            <div class="filter-dropdown-content">
+                <div class="filter-dropdown-header">
+                    <h3 class="filter-dropdown-title">Filter Products</h3>
+                    <div class="filter-actions">
+                        <button class="btn-clear-filters" onclick="clearAllFilters()">Clear All</button>
+                        <button class="btn-done-filters" onclick="closeFilterDropdown()">Done</button>
+                    </div>
+                </div>
+                    <div class="filter-section">
+                        <h3>Robot Type</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="amr">
+                            <label for="amr">AMR (Mobile Robots)</label>
+                            <span class="filter-count">24</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="arms">
+                            <label for="arms">Robotic Arms</label>
+                            <span class="filter-count">18</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="drones">
+                            <label for="drones">Industrial Drones</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="agv">
+                            <label for="agv">AGV Systems</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Payload Capacity</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="payload-light">
+                            <label for="payload-light">0-100 kg (Light)</label>
+                            <span class="filter-count">15</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="payload-medium">
+                            <label for="payload-medium">100-600 kg (Medium)</label>
+                            <span class="filter-count">22</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="payload-heavy">
+                            <label for="payload-heavy">600-1500 kg (Heavy)</label>
+                            <span class="filter-count">14</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="payload-ultra">
+                            <label for="payload-ultra">1500+ kg (Ultra-Heavy)</label>
+                            <span class="filter-count">6</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Autonomy Type</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="auto-slam">
+                            <label for="auto-slam">SLAM Navigation</label>
+                            <span class="filter-count">28</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="auto-lidar">
+                            <label for="auto-lidar">LiDAR Guided</label>
+                            <span class="filter-count">31</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="auto-vision">
+                            <label for="auto-vision">Vision-Based</label>
+                            <span class="filter-count">19</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="auto-gps">
+                            <label for="auto-gps">GPS/RTK</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Battery Life</h3>
+                        <div class="range-slider">
+                            <input type="range" min="0" max="480" value="240" id="batteryRange">
+                            <div class="range-values">
+                                <span>0 min</span>
+                                <span id="batteryValue">240 min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Price Range (USD)</h3>
+                        <div class="price-inputs">
+                            <input type="text" placeholder="Min" value="10,000">
+                            <input type="text" placeholder="Max" value="500,000">
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Industry Focus</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="warehouse">
+                            <label for="warehouse">Warehouse/Logistics</label>
+                            <span class="filter-count">35</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="manufacturing">
+                            <label for="manufacturing">Manufacturing</label>
+                            <span class="filter-count">42</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="agriculture">
+                            <label for="agriculture">Agriculture</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="inspection">
+                            <label for="inspection">Inspection/Monitoring</label>
+                            <span class="filter-count">16</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Vendor Rating</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="rating5">
+                            <label for="rating5">⭐⭐⭐⭐⭐ 5 Stars</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="rating4">
+                            <label for="rating4">⭐⭐⭐⭐ 4+ Stars</label>
+                            <span class="filter-count">24</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="verified">
+                            <label for="verified">✓ Verified OEMs</label>
+                            <span class="filter-count">18</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </header>
+
+    <div class="banner">
+        <h1>Enterprise Autonomous Robotics</h1>
+        <p>Discover, compare, and procure industrial robots with full-service support</p>
+    </div>
+
+    <!-- Active Filters Bar -->
+    <div class="active-filters-bar" id="activeFiltersBar">
+        <div class="active-filters-content">
+            <span class="active-filters-label">Active Filters:</span>
+            <div class="active-filters-list" id="activeFiltersList"></div>
+            <button class="btn-clear-all" onclick="clearAllFilters()">Clear All</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <main class="products">
+            <div class="products-header">
+                <div class="results-count">
+                    <span id="productCount">24</span> Autonomous Mobile Robots
+                </div>
+                <select class="sort-dropdown">
+                    <option>Best Match</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Highest Rated</option>
+                    <option>Most Reviews</option>
+                    <option>Newest First</option>
+                </select>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be dynamically inserted -->
+            </div>
+        </main>
+
+        <!-- Contact Us CTA Section -->
+        <div class="contact-cta-container">
+            <h2 style="margin-bottom: 1rem; color: var(--text);">Have Questions?</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted); max-width: 600px; margin-left: auto; margin-right: auto;">
+                Our team of robotics experts is here to help you find the perfect solution for your needs.
+            </p>
+            <button class="btn-primary" onclick="openContactModal()" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                Contact Us
+            </button>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Product Details</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be dynamically inserted -->
+            </div>
+            <div class="modal-footer">
+                <div class="service-badges">
+                    <div class="service-badge">
+                        <span>✓</span> Installation Support
+                    </div>
+                    <div class="service-badge">
+                        <span>✓</span> Training Included
+                    </div>
+                    <div class="service-badge">
+                        <span>✓</span> 24/7 Service
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="openContactModal()">Request Full Quote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Contact Us</h2>
+                <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="contactFormContainer">
+                    <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productInterest">Product of Interest</label>
+                            <input type="text" id="productInterest" name="productInterest" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Questions / Comments</label>
+                            <textarea id="notes" name="notes" placeholder="Tell us about your requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        let products = [
+            {
+                id: 1,
+                vendor: "OMRON Robotics",
+                name: "LD-250 Mobile Robot",
+                type: "amr",
+                emoji: "🤖",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ3MDg2MjYxOTI3ODgxNzI3MjMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0NzA4NjI2MTkyNzg4MTcyNzIzKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ3MDg2MjYxOTI3ODgxNzI3MjMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0NzA4NjI2MTkyNzg4MTcyNzIzKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDE0MDA5MDgwMTU2NjM3NzgxNTAiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQxNDAwOTA4MDE1NjYzNzc4MTUwKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMjwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ4MTk2MDk3Nzk3MzYxOTEyNTciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0ODE5NjA5Nzc5NzM2MTkxMjU3KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMzwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI0MDYwNTQxNzM1NzQ2ODU2MzQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyNDA2MDU0MTczNTc0Njg1NjM0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgNDwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4="
+                ],
+                
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDYxNDU2NzEwNjYyMDgzNzg0NTgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2MTQ1NjcxMDY2MjA4Mzc4NDU4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc0NzAzMDAyOTg2NTE5NTYxNTgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3NDcwMzAwMjk4NjUxOTU2MTU4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAyPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDU0MjA5OTc2NDMwNTQ3MzYxNzAiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ1NDIwOTk3NjQzMDU0NzM2MTcwKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDY0MjYwMjI5NjgwMTMxOTYzNyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM0ZmFjZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwZjJmZTtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPC9kZWZzPgogICAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZ3JhZDY0MjYwMjI5NjgwMTMxOTYzNykiLz4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI5MCIgZm9udC1mYW1pbHk9IkFyaWFsIj7wn6SWPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5BTVI8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgNDwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4="
+                ],
+                
+                
+                badge: "verified",
+                specs: {
+                    payload: "250 kg",
+                    battery: "8 hours",
+                    autonomy: "SLAM Nav",
+                    speed: "2.0 m/s"
+                },
+                rating: 4.8,
+                reviews: 142,
+                price: "$45,000",
+                priceNote: "Starting",
+                payloadCategory: "medium",
+                autonomyType: "slam",
+                description: "The LD-250 is a high-performance autonomous mobile robot designed for material transport in manufacturing and logistics environments. With intelligent navigation and obstacle avoidance, it operates safely alongside human workers.",
+                features: [
+                    { icon: "🎯", title: "Precision Navigation", desc: "Advanced SLAM technology for accurate positioning" },
+                    { icon: "🔋", title: "Long Battery Life", desc: "8+ hours of continuous operation" },
+                    { icon: "⚡", title: "Fast Charging", desc: "Full charge in under 2 hours" },
+                    { icon: "🛡️", title: "Safety First", desc: "360° obstacle detection and avoidance" }
+                ],
+                applications: ["Material Transport", "Line-side Delivery", "Warehouse Automation", "Pallet Movement"]
+            },
+            {
+                id: 2,
+                vendor: "OTTO Motors",
+                name: "OTTO 1500 Heavy Duty AMR",
+                type: "amr",
+                emoji: "🚛",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDcyMDQ4MDU0MjU1ODEyNTcwNzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3MjA0ODA1NDI1NTgxMjU3MDcxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDcyMDQ4MDU0MjU1ODEyNTcwNzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3MjA0ODA1NDI1NTgxMjU3MDcxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDMwNDYxMTk5ODU4NTc3NTAwNTgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjA5M2ZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmNTU3NmM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQzMDQ2MTE5OTg1ODU3NzUwMDU4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMjwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI4MDM2NDE1MjA4NTY0ODQ5MzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyODAzNjQxNTIwODU2NDg0OTMxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMzwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI3NzE0NTI0Mzk0OTAyNjg2NDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyNzcxNDUyNDM5NDkwMjY4NjQxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgNDwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4="
+                ],
+                
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIyODU3NjY4ODUxOTc2MDY2ODIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMjg1NzY2ODg1MTk3NjA2NjgyKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQyMDgyMzk0NzM4MDE1MzYwIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2YwOTNmYjtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjU1NzZjO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNncmFkNDIwODIzOTQ3MzgwMTUzNjApIi8+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjE0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCI+8J+amzwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+SGVhdnkgQU1SPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDI8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDE5MDQ2OTgyMjA3OTA3OTk5MTciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQxOTA0Njk4MjIwNzkwNzk5OTE3KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc5MzQzNzc1MDEzNTQ3OTgxNDQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3OTM0Mzc3NTAxMzU0Nzk4MTQ0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhlYXZ5IEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyA0PC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg=="
+                ],
+                
+                badge: "top rated",
+                specs: {
+                    payload: "1500 kg",
+                    battery: "6 hours",
+                    autonomy: "LiDAR 3D",
+                    speed: "2.0 m/s"
+                },
+                rating: 4.9,
+                reviews: 89,
+                price: "$128,000",
+                priceNote: "Starting",
+                payloadCategory: "heavy",
+                autonomyType: "lidar",
+                description: "Built for the toughest industrial environments, the OTTO 1500 handles heavy payloads with precision and reliability. 3D LiDAR enables navigation in complex, dynamic spaces.",
+                features: [
+                    { icon: "💪", title: "Heavy-Duty Build", desc: "Carries up to 1500 kg with ease" },
+                    { icon: "🔍", title: "3D LiDAR", desc: "Advanced sensing for complex environments" },
+                    { icon: "🏭", title: "Industrial Grade", desc: "Built for 24/7 operation" },
+                    { icon: "🔗", title: "Fleet Ready", desc: "Integrate with existing OTTO fleets" }
+                ],
+                applications: ["Heavy Material Transport", "Automotive Manufacturing", "Steel & Metal Fabrication", "Large Component Movement"]
+            },
+            {
+                id: 3,
+                vendor: "MiR (Mobile Industrial Robots)",
+                name: "MiR600 Autonomous Robot",
+                type: "amr",
+                emoji: "📦",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDY5NTc4NDAxMTcwNjgyODk5MzgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2OTU3ODQwMTE3MDY4Mjg5OTM4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1pUjYwMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDY5NTc4NDAxMTcwNjgyODk5MzgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2OTU3ODQwMTE3MDY4Mjg5OTM4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1pUjYwMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc3ODQzMzYxNjI4NDM2OTU4NTYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3Nzg0MzM2MTYyODQzNjk1ODU2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1pUjYwMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMjwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI1MTUyMzQwMDg0MTE0Mjg3MjYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyNTE1MjM0MDA4NDExNDI4NzI2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1pUjYwMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMzwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc3NDQ0Mzc3NDAwNDA0MTkwMzMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3NzQ0NDM3NzQwMDQwNDE5MDMzKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1pUjYwMDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgNDwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4="
+                ],
+                badge: "verified",
+                specs: {
+                    payload: "600 kg",
+                    battery: "10 hours",
+                    autonomy: "SLAM Nav",
+                    speed: "1.8 m/s"
+                },
+                rating: 4.7,
+                reviews: 203,
+                price: "$62,000",
+                priceNote: "Starting",
+                payloadCategory: "medium",
+                autonomyType: "slam",
+                description: "The MiR600 offers exceptional flexibility and payload capacity for diverse industrial applications. Extended battery life ensures uninterrupted operations throughout full shifts.",
+                features: [
+                    { icon: "⏱️", title: "Extended Runtime", desc: "Up to 10 hours of operation" },
+                    { icon: "🎛️", title: "Modular Design", desc: "Customizable top modules" },
+                    { icon: "📱", title: "Easy Programming", desc: "Intuitive mobile interface" },
+                    { icon: "🌐", title: "Cloud Connected", desc: "Fleet management dashboard" }
+                ],
+                applications: ["Pallet Transport", "Cart Pulling", "Goods-to-Person", "Cross-Dock Operations"]
+            },
+            {
+                id: 4,
+                vendor: "FANUC Robotics",
+                name: "M-710iC/50 Robot Arm",
+                type: "arm",
+                emoji: "🦾",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc1Mjc2NTAxMzAwNjQ5NzExMTUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3NTI3NjUwMTMwMDY0OTcxMTE1KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc1Mjc2NTAxMzAwNjQ5NzExMTUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3NTI3NjUwMTMwMDY0OTcxMTE1KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ5MzYzMzk4NzQ0MDQ4NDYwMzkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0OTM2MzM5ODc0NDA0ODQ2MDM5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAyPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIzMzIwNDAyMjExNTk0MTk3NjQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMzMyMDQwMjIxMTU5NDE5NzY0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQxNjA5NTE3MzIzMjQ1NzQ5OTIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0MTYwOTUxNzMyMzI0NTc0OTkyKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyA0PC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg=="
+                ],
+                badge: "verified",
+                specs: {
+                    payload: "50 kg",
+                    reach: "2050 mm",
+                    dof: "6-axis",
+                    repeatability: "±0.08 mm"
+                },
+                rating: 4.9,
+                reviews: 156,
+                price: "$85,000",
+                priceNote: "Base",
+                payloadCategory: "medium",
+                autonomyType: null,
+                description: "FANUC's M-710iC/50 delivers precision and reliability for demanding industrial applications. With a compact footprint and long reach, it excels in material handling, machine tending, and palletizing.",
+                features: [
+                    { icon: "🎯", title: "High Precision", desc: "±0.08mm repeatability" },
+                    { icon: "📏", title: "Extended Reach", desc: "2050mm working envelope" },
+                    { icon: "⚙️", title: "6-Axis Freedom", desc: "Complete flexibility of movement" },
+                    { icon: "🔧", title: "Easy Maintenance", desc: "Modular components for quick service" }
+                ],
+                applications: ["Material Handling", "Machine Tending", "Palletizing", "Assembly Operations"]
+            },
+            {
+                id: 5,
+                vendor: "DJI Enterprise",
+                name: "Matrice 350 RTK",
+                type: "drone",
+                emoji: "🚁",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDcxMjg3MzYxNjgyMzY1NTA1MjYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3MTI4NzM2MTY4MjM2NTUwNTI2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmoE8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkRyb25lPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDE8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDcxMjg3MzYxNjgyMzY1NTA1MjYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3MTI4NzM2MTY4MjM2NTUwNTI2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmoE8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkRyb25lPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDE8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDY4NzQ5MzUyMDY0OTgxNTMwMjMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjA5M2ZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmNTU3NmM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2ODc0OTM1MjA2NDk4MTUzMDIzKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmoE8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkRyb25lPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDI8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI5MTEwMjEyMzAxMjg0NTY4OTEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyOTExMDIxMjMwMTI4NDU2ODkxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmoE8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkRyb25lPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDM8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIwNTY0NTg3MTkzMDY5NTkyOTkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMDU2NDU4NzE5MzA2OTU5Mjk5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmoE8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkRyb25lPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDQ8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+"
+                ],
+                badge: "top rated",
+                specs: {
+                    payload: "2.7 kg",
+                    flight: "55 min",
+                    range: "20 km",
+                    precision: "RTK GPS"
+                },
+                rating: 4.8,
+                reviews: 267,
+                price: "$14,500",
+                priceNote: "Starting",
+                payloadCategory: "light",
+                autonomyType: "gps",
+                description: "The Matrice 350 RTK is DJI's flagship enterprise drone, offering unmatched flight time, range, and payload versatility. RTK positioning ensures centimeter-level accuracy for surveying and inspection.",
+                features: [
+                    { icon: "📡", title: "RTK Precision", desc: "Centimeter-level positioning accuracy" },
+                    { icon: "🔋", title: "Extended Flight", desc: "Up to 55 minutes flight time" },
+                    { icon: "📷", title: "Modular Payload", desc: "Support for multiple camera systems" },
+                    { icon: "🌦️", title: "Weather Resistant", desc: "IP55 rating for harsh conditions" }
+                ],
+                applications: ["Infrastructure Inspection", "Surveying & Mapping", "Search & Rescue", "Agriculture Monitoring"]
+            },
+            {
+                id: 6,
+                vendor: "Linde Material Handling",
+                name: "C-MATIC 15 Guided Cart",
+                type: "amr",
+                emoji: "🛒",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDM5NzMyMDQ5MTExODAxOTM4OTQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQzOTczMjA0OTExMTgwMTkzODk0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmpo8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFHVjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDM5NzMyMDQ5MTExODAxOTM4OTQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQzOTczMjA0OTExMTgwMTkzODk0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmpo8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFHVjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc4ODcxMTQxMDgxMzIxMDMwMTYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3ODg3MTE0MTA4MTMyMTAzMDE2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmpo8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFHVjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAyPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDU5OTU5NTQ3MDE0NDk1OTQzNTIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ1OTk1OTU0NzAxNDQ5NTk0MzUyKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmpo8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkFHVjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDk2MTk3NTEwNTI2ODY2OTI4IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzY2N2VlYTtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNzY0YmEyO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNncmFkOTYxOTc1MTA1MjY4NjY5MjgpIi8+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjE0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCI+8J+amjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+QUdWPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDQ8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+"
+                ],
+                badge: "verified",
+                specs: {
+                    payload: "1500 kg",
+                    battery: "7 hours",
+                    autonomy: "QR Code Nav",
+                    height: "320 mm"
+                },
+                rating: 4.6,
+                reviews: 78,
+                price: "$38,000",
+                priceNote: "Starting",
+                payloadCategory: "heavy",
+                autonomyType: "vision",
+                description: "The C-MATIC 15 offers cost-effective automation for material transport using QR code navigation. Low profile design allows it to navigate under carts and racks.",
+                features: [
+                    { icon: "📐", title: "Low Profile", desc: "Only 320mm height for under-cart navigation" },
+                    { icon: "💰", title: "Cost Effective", desc: "QR code navigation reduces infrastructure costs" },
+                    { icon: "🔄", title: "Auto Charging", desc: "Automatic battery management" },
+                    { icon: "📊", title: "Fleet Ready", desc: "Coordinate multiple units" }
+                ],
+                applications: ["Under-Cart Transport", "Pallet Movement", "Manufacturing Logistics", "Warehouse Distribution"]
+            },
+            {
+                id: 7,
+                vendor: "ABB Robotics",
+                name: "IRB 6700 Heavy Duty Arm",
+                type: "arm",
+                emoji: "🦿",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDgyMzg3NzUwODU5NzA4NDYxOTkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4MjM4Nzc1MDg1OTcwODQ2MTk5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr88L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDgyMzg3NzUwODU5NzA4NDYxOTkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4MjM4Nzc1MDg1OTcwODQ2MTk5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr88L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDg5NzcyMzQ4MDk3Nzk2MzM5OTAiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjA5M2ZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmNTU3NmM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4OTc3MjM0ODA5Nzc5NjMzOTkwKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr88L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMjwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDg4NjkwMTc5MDUyNjAyMzE4NDAiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4ODY5MDE3OTA1MjYwMjMxODQwKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr88L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgMzwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDM0NDc5NjgwODYzODYyMzQyMjAiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNmExMWNiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMyNTc1ZmM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQzNDQ3OTY4MDg2Mzg2MjM0MjIwKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr88L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlJvYm90IEFybTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+QW5nbGUgNDwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4="
+                ],
+                
+                
+                
+                
+                badge: "verified",
+                specs: {
+                    payload: "300 kg",
+                    reach: "3200 mm",
+                    dof: "6-axis",
+                    repeatability: "±0.05 mm"
+                },
+                rating: 4.9,
+                reviews: 91,
+                price: "$165,000",
+                priceNote: "Base",
+                payloadCategory: "ultra",
+                autonomyType: null,
+                description: "ABB's IRB 6700 is engineered for heavy-duty applications requiring long reach and high payload. Exceptional repeatability ensures precision even with massive components.",
+                features: [
+                    { icon: "💪", title: "Heavy Payload", desc: "Handle up to 300 kg" },
+                    { icon: "📏", title: "Long Reach", desc: "3200mm maximum reach" },
+                    { icon: "🎯", title: "Ultra Precise", desc: "±0.05mm repeatability" },
+                    { icon: "🛡️", title: "Rugged Build", desc: "Designed for harsh environments" }
+                ],
+                applications: ["Heavy Material Handling", "Large Part Assembly", "Machine Loading", "Foundry Operations"]
+            },
+            {
+                id: 8,
+                vendor: "Hai Robotics",
+                name: "ACR System HaiPick A42T",
+                type: "amr",
+                emoji: "📊",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ0NDAzOTUwMjE4MDI2ODkzNDUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0NDQwMzk1MDIxODAyNjg5MzQ1KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfk6Y8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhhaVBpY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ0NDAzOTUwMjE4MDI2ODkzNDUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0NDQwMzk1MDIxODAyNjg5MzQ1KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfk6Y8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhhaVBpY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgMTwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDgxMzg0NzA3NjQwNzI4MTMzNTgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4MTM4NDcwNzY0MDcyODEzMzU4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfk6Y8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhhaVBpY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgMjwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQ2OTM2MjIyMjMwOTE0NDgwNTEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0NjkzNjIyMjIzMDkxNDQ4MDUxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfk6Y8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhhaVBpY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgMzwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDMzOTgzNzgzODUyMTEwOTE4NzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQzMzk4Mzc4Mzg1MjExMDkxODcxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfk6Y8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkhhaVBpY2s8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgNDwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4="
+                ],
+                badge: "top rated",
+                specs: {
+                    payload: "50 kg",
+                    lift: "10 m",
+                    autonomy: "3D Vision",
+                    throughput: "600 bins/hr"
+                },
+                rating: 4.7,
+                reviews: 134,
+                price: "$95,000",
+                priceNote: "Per unit",
+                payloadCategory: "light",
+                autonomyType: "vision",
+                description: "Revolutionary autonomous case-handling robot for high-density vertical storage. The HaiPick system maximizes warehouse space utilization while increasing picking efficiency.",
+                features: [
+                    { icon: "📦", title: "Vertical Storage", desc: "Access shelves up to 10 meters" },
+                    { icon: "⚡", title: "High Throughput", desc: "600 bins per hour capacity" },
+                    { icon: "🎯", title: "3D Vision", desc: "Precise bin identification and handling" },
+                    { icon: "🏢", title: "Space Efficient", desc: "Maximize vertical warehouse space" }
+                ],
+                applications: ["E-commerce Fulfillment", "Retail Distribution", "Parts Storage", "Order Picking"]
+            },
+            {
+                id: 9,
+                vendor: "JOUAV",
+                name: "CW-25E VTOL Mapping Drone",
+                type: "drone",
+                emoji: "✈️",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc1MTY4NDQxNzA1ODQyMjUwMzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3NTE2ODQ0MTcwNTg0MjI1MDMxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPuKciO+4jzwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+VlRPTCBEcm9uZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc1MTY4NDQxNzA1ODQyMjUwMzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3NTE2ODQ0MTcwNTg0MjI1MDMxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPuKciO+4jzwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+VlRPTCBEcm9uZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDg1NjcxNzc3NDM5NDI2MTIzMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM2YTExY2I7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzI1NzVmYztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPC9kZWZzPgogICAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZ3JhZDg1NjcxNzc3NDM5NDI2MTIzMSkiLz4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI5MCIgZm9udC1mYW1pbHk9IkFyaWFsIj7inIjvuI88L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlZUT0wgRHJvbmU8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjgpIiBmb250LXNpemU9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiPlZpZXcgMjwvdGV4dD4KICAgIDxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjU3NiIgaGVpZ2h0PSIzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjQpIiBzdHJva2Utd2lkdGg9IjMiIHJ4PSIxMCIvPgo8L3N2Zz4=",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDQwOTE2MjY3NjA2MzczNjE2MTkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ0MDkxNjI2NzYwNjM3MzYxNjE5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPuKciO+4jzwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+VlRPTCBEcm9uZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDg5MTIzMTU0NTQ5MTA3ODc2NDciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4OTEyMzE1NDU0OTEwNzg3NjQ3KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPuKciO+4jzwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCI+VlRPTCBEcm9uZTwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyA0PC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg=="
+                ],
+                badge: "verified",
+                specs: {
+                    payload: "3 kg",
+                    flight: "150 min",
+                    range: "100 km",
+                    precision: "PPK RTK"
+                },
+                rating: 4.5,
+                reviews: 52,
+                price: "$42,000",
+                priceNote: "Complete kit",
+                payloadCategory: "light",
+                autonomyType: "gps",
+                description: "Vertical take-off and landing (VTOL) fixed-wing design combines the best of both worlds - hover capability and long-range efficiency. Ideal for large-area surveying and mapping missions.",
+                features: [
+                    { icon: "🚁", title: "VTOL Design", desc: "Vertical takeoff, efficient cruise" },
+                    { icon: "⏱️", title: "2.5 Hour Flight", desc: "Extended mission duration" },
+                    { icon: "🗺️", title: "Survey Grade", desc: "PPK/RTK for mapping accuracy" },
+                    { icon: "🌍", title: "Long Range", desc: "Cover 100+ km per mission" }
+                ],
+                applications: ["Land Surveying", "Pipeline Inspection", "Agricultural Mapping", "Mining Surveys"]
+            },
+            {
+                id: 10,
+                vendor: "KUKA Robotics",
+                name: "KMR iiwa Mobile Manipulator",
+                type: "amr",
+                emoji: "🔧",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI3OTk3MjYzMzM5ODMwODE3NjkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyNzk5NzI2MzMzOTgzMDgxNzY5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1hbmlwdWxhdG9yPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDE8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI3OTk3MjYzMzM5ODMwODE3NjkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyNzk5NzI2MzMzOTgzMDgxNzY5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1hbmlwdWxhdG9yPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDE8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDc4MDMxNzMyNjM3NDgzOTUwMjMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZhY2ZlO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGYyZmU7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ3ODAzMTczMjYzNzQ4Mzk1MDIzKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1hbmlwdWxhdG9yPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDI8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI3MDAzOTg4ODg2MDczMjE1MDgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyNzAwMzk4ODg4NjA3MzIxNTA4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1hbmlwdWxhdG9yPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDM8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDYzNjE0ODM3NjI2MTE0OTA0NDYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2MzYxNDgzNzYyNjExNDkwNDQ2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpJY8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPk1hbmlwdWxhdG9yPC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDQ8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+"
+                ],
+                badge: "top rated",
+                specs: {
+                    payload: "600 kg base",
+                    battery: "8 hours",
+                    autonomy: "SLAM Nav",
+                    arm: "7-axis cobot"
+                },
+                rating: 4.9,
+                reviews: 67,
+                price: "$185,000",
+                priceNote: "Complete system",
+                payloadCategory: "medium",
+                autonomyType: "slam",
+                description: "The ultimate mobile manipulation solution combining KUKA's mobile platform with the sensitive LBR iiwa cobot arm. Brings automation to tasks that require both mobility and dexterous manipulation.",
+                features: [
+                    { icon: "🤝", title: "Collaborative", desc: "Safe human-robot collaboration" },
+                    { icon: "🦾", title: "7-Axis Arm", desc: "Extra degree of freedom for complex tasks" },
+                    { icon: "🚶", title: "Mobile Platform", desc: "Navigate to where work is needed" },
+                    { icon: "🎓", title: "Smart Learning", desc: "AI-assisted programming" }
+                ],
+                applications: ["Mobile Assembly", "Quality Inspection", "Machine Tending", "Flexible Manufacturing"]
+            },
+            {
+                id: 11,
+                vendor: "Universal Robots",
+                name: "UR20 Collaborative Arm",
+                type: "arm",
+                emoji: "🤝",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIzMTQ5ODcyOTY1ODA1Mzk2NDQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMzE0OTg3Mjk2NTgwNTM5NjQ0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkNvYm90PC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDE8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIzMTQ5ODcyOTY1ODA1Mzk2NDQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNDNlOTdiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzOGY5ZDc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMzE0OTg3Mjk2NTgwNTM5NjQ0KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkNvYm90PC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDE8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDgxMDEyNjA0OTY4MTY2MDQyODkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYThlZGVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWQ2ZTM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4MTAxMjYwNDk2ODE2NjA0Mjg5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkNvYm90PC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDI8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDI3ODMyMTU4MTUxMzg5MzMxOSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM2NjdlZWE7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6Izc2NGJhMjtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPC9kZWZzPgogICAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjZ3JhZDI3ODMyMTU4MTUxMzg5MzMxOSkiLz4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI5MCIgZm9udC1mYW1pbHk9IkFyaWFsIj7wn6a+PC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjI4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5Db2JvdDwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDY0MzU3ODc4NDYyMzI4NDcxOTEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMzBjZmQwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMzMzA4Njc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2NDM1Nzg3ODQ2MjMyODQ3MTkxKSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfpr48L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkNvYm90PC90ZXh0PgogICAgPHRleHQgeD0iMzAwIiB5PSIyNzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC44KSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsIj5WaWV3IDQ8L3RleHQ+CiAgICA8cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI1NzYiIGhlaWdodD0iMzc2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgc3Ryb2tlLXdpZHRoPSIzIiByeD0iMTAiLz4KPC9zdmc+"
+                ],
+                badge: "verified",
+                specs: {
+                    payload: "20 kg",
+                    reach: "1750 mm",
+                    dof: "6-axis",
+                    repeatability: "±0.05 mm"
+                },
+                rating: 4.8,
+                reviews: 421,
+                price: "$48,000",
+                priceNote: "Base",
+                payloadCategory: "light",
+                autonomyType: null,
+                description: "Universal Robots' flagship heavy-payload cobot brings collaborative automation to applications previously requiring traditional industrial robots. Easy programming and inherent safety make it accessible to all skill levels.",
+                features: [
+                    { icon: "🤝", title: "Human Safe", desc: "Built-in force/torque sensing" },
+                    { icon: "📱", title: "Easy Programming", desc: "Intuitive teach pendant" },
+                    { icon: "🔌", title: "Plug & Play", desc: "Quick deployment and integration" },
+                    { icon: "🌐", title: "UR+ Ecosystem", desc: "Certified accessories and software" }
+                ],
+                applications: ["Collaborative Assembly", "Packaging", "CNC Machine Tending", "Welding"]
+            },
+            {
+                id: 12,
+                vendor: "Mecalux Automation",
+                name: "AMR 600 Shelf Transport",
+                type: "amr",
+                emoji: "🏗️",
+                image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIzNzA1NTMyNzQwMDk5MDU5NzUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMzcwNTUzMjc0MDA5OTA1OTc1KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNoZWxmIEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                images: [
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIzNzA1NTMyNzQwMDk5MDU5NzUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmY2YjZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlZTVhNmY7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQyMzcwNTUzMjc0MDA5OTA1OTc1KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNoZWxmIEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAxPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDY1ODI2NDQxNDc0OTAxNzcyNzYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmE3MDlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZWUxNDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ2NTgyNjQ0MTQ3NDkwMTc3Mjc2KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNoZWxmIEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAyPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDgwNTcxOTcwOTM1NzIyMTc1OTkiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjA5M2ZiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmNTU3NmM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQ4MDU3MTk3MDkzNTcyMjE3NTk5KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNoZWxmIEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyAzPC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg==",
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDM2NDc4ODk3NzI2NDUzMDE0MzgiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWQzNjQ3ODg5NzcyNjQ1MzAxNDM4KSIvPgogICAgPHRleHQgeD0iMzAwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjkwIiBmb250LWZhbWlseT0iQXJpYWwiPvCfmps8L3RleHQ+CiAgICA8dGV4dCB4PSIzMDAiIHk9IjI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNoZWxmIEFNUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjMwMCIgeT0iMjc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCI+VmlldyA0PC90ZXh0PgogICAgPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNTc2IiBoZWlnaHQ9IjM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiIHN0cm9rZS13aWR0aD0iMyIgcng9IjEwIi8+Cjwvc3ZnPg=="
+                ],
+                badge: "verified",
+                specs: {
+                    payload: "600 kg",
+                    battery: "9 hours",
+                    autonomy: "Laser Nav",
+                    features: "Lift & Rotate"
+                },
+                rating: 4.6,
+                reviews: 95,
+                price: "$58,000",
+                priceNote: "Starting",
+                payloadCategory: "medium",
+                autonomyType: "lidar",
+                description: "Specialized for shelf-to-person picking operations. The AMR 600 can lift, transport, and rotate entire shelving units, bringing inventory directly to workers for efficient order fulfillment.",
+                features: [
+                    { icon: "🔄", title: "Lift & Rotate", desc: "360° shelf rotation capability" },
+                    { icon: "📚", title: "Shelf Transport", desc: "Move entire storage units" },
+                    { icon: "⚡", title: "9 Hour Battery", desc: "Extended shift operation" },
+                    { icon: "🎯", title: "Precise Docking", desc: "Accurate shelf engagement" }
+                ],
+                applications: ["Order Fulfillment", "Goods-to-Person", "Inventory Management", "E-commerce Warehouses"]
+            }
+        ];
+
+        // Render products
+        function renderProducts(productsToRender = products) {
+            const grid = document.getElementById('productGrid');
+            const count = document.getElementById('productCount');
+            
+            count.textContent = productsToRender.length;
+            
+            grid.innerHTML = productsToRender.map(product => `
+                <div class="product-card" onclick="openProductModal(${product.id})">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" />
+                        <!-- badge removed -->
+                    </div>
+                    <div class="product-info">
+                        <div class="product-vendor">${product.vendor}</div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-specs">
+                            ${Object.entries(product.specs).map(([key, value]) => `
+                                <div class="spec">
+                                    <div class="spec-label">${key}</div>
+                                    <div class="spec-value">${value}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="product-rating">
+                            <div class="stars">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5-Math.floor(product.rating))}</div>
+                            <div class="rating-text">${product.rating} (${product.reviews} reviews)</div>
+                        </div>
+                        <div class="product-price">
+                            <div>
+                                <div class="price">${product.price}</div>
+                                <div class="price-note">${product.priceNote}</div>
+                            </div>
+                            <button class="btn-view" onclick="event.stopPropagation(); openProductModal(${product.id})">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality with suggestions
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
+            
+            if (searchTerm.length < 2) {
+                searchSuggestions.classList.remove('active');
+                renderProducts(products);
+                return;
+            }
+
+            // Debounce search
+            searchTimeout = setTimeout(() => {
+                performSearch(searchTerm);
+            }, 300);
+        });
+
+        function performSearch(searchTerm) {
+            // Search products
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(searchTerm) ||
+                p.vendor.toLowerCase().includes(searchTerm) ||
+                p.description.toLowerCase().includes(searchTerm) ||
+                p.type.toLowerCase().includes(searchTerm) ||
+                Object.values(p.specs).some(v => String(v).toLowerCase().includes(searchTerm)) ||
+                p.applications.some(app => app.toLowerCase().includes(searchTerm))
+            );
+
+            // Show suggestions
+            showSearchSuggestions(searchTerm, filtered);
+            
+            // Update product grid
+            renderProducts(filtered);
+        }
+
+        function showSearchSuggestions(term, results) {
+            if (results.length === 0) {
+                searchSuggestions.innerHTML = `
+                    <div class="search-no-results">
+                        No results found for "${term}"<br>
+                        <small>Try different keywords or browse our categories</small>
+                    </div>
+                `;
+                searchSuggestions.classList.add('active');
+                return;
+            }
+
+            // Group results by type
+            const byType = {
+                amr: results.filter(p => p.type === 'amr').slice(0, 3),
+                arm: results.filter(p => p.type === 'arm').slice(0, 3),
+                drone: results.filter(p => p.type === 'drone').slice(0, 3)
+            };
+
+            let html = '';
+            
+            if (byType.amr.length > 0) {
+                html += '<div class="search-category">Mobile Robots (AMR)</div>';
+                byType.amr.forEach(p => {
+                    html += `
+                        <div class="search-suggestion-item" onclick="selectSearchResult(${p.id})">
+                            <div class="suggestion-icon">${p.emoji}</div>
+                            <div class="suggestion-content">
+                                <div class="suggestion-title">${p.name}</div>
+                                <div class="suggestion-meta">${p.vendor} • ${p.price}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (byType.arm.length > 0) {
+                html += '<div class="search-category">Robotic Arms</div>';
+                byType.arm.forEach(p => {
+                    html += `
+                        <div class="search-suggestion-item" onclick="selectSearchResult(${p.id})">
+                            <div class="suggestion-icon">${p.emoji}</div>
+                            <div class="suggestion-content">
+                                <div class="suggestion-title">${p.name}</div>
+                                <div class="suggestion-meta">${p.vendor} • ${p.price}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (byType.drone.length > 0) {
+                html += '<div class="search-category">Industrial Drones</div>';
+                byType.drone.forEach(p => {
+                    html += `
+                        <div class="search-suggestion-item" onclick="selectSearchResult(${p.id})">
+                            <div class="suggestion-icon">${p.emoji}</div>
+                            <div class="suggestion-content">
+                                <div class="suggestion-title">${p.name}</div>
+                                <div class="suggestion-meta">${p.vendor} • ${p.price}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (results.length > 6) {
+                html += `<div class="search-category">Showing ${Math.min(6, results.length)} of ${results.length} results</div>`;
+            }
+
+            searchSuggestions.innerHTML = html;
+            searchSuggestions.classList.add('active');
+        }
+
+        function selectSearchResult(productId) {
+            searchSuggestions.classList.remove('active');
+            searchInput.value = '';
+            openProductModal(productId);
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-bar')) {
+                searchSuggestions.classList.remove('active');
+            }
+        });
+
+        // Handle escape key
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchSuggestions.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+
+        // Battery range slider
+        document.getElementById('batteryRange').addEventListener('input', (e) => {
+            document.getElementById('batteryValue').textContent = e.target.value + ' min';
+        });
+
+        // Filter dropdown toggle
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            const btn = document.getElementById('filtersBtn');
+            dropdown.classList.toggle('active');
+            btn.classList.toggle('active');
+        }
+
+        function closeFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            const btn = document.getElementById('filtersBtn');
+            dropdown.classList.remove('active');
+            btn.classList.remove('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('filterDropdown');
+            const btn = document.getElementById('filtersBtn');
+            if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+                closeFilterDropdown();
+            }
+        });
+
+        // Filter functionality
+        const filterCheckboxes = document.querySelectorAll('.filter-option input[type="checkbox"]');
+        filterCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                console.log('Filter changed:', checkbox.id, checkbox.checked);
+                applyFilters();
+                updateActiveFilters();
+                updateFilterBadge();
+            });
+        });
+
+        function updateFilterBadge() {
+            const activeCount = Array.from(filterCheckboxes).filter(cb => cb.checked).length;
+            const badge = document.getElementById('filterBadge');
+            
+            if (activeCount > 0) {
+                badge.textContent = activeCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function updateActiveFilters() {
+            const activeFiltersBar = document.getElementById('activeFiltersBar');
+            const activeFiltersList = document.getElementById('activeFiltersList');
+            const activeFilters = [];
+
+            // Check all filters
+            filterCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const label = checkbox.nextElementSibling.textContent;
+                    activeFilters.push({
+                        id: checkbox.id,
+                        label: label
+                    });
+                }
+            });
+
+            if (activeFilters.length > 0) {
+                activeFiltersList.innerHTML = activeFilters.map(filter => `
+                    <div class="filter-chip">
+                        ${filter.label}
+                        <span class="filter-chip-remove" onclick="removeFilter('${filter.id}')">×</span>
+                    </div>
+                `).join('');
+                activeFiltersBar.classList.add('visible');
+            } else {
+                activeFiltersBar.classList.remove('visible');
+                activeFiltersList.innerHTML = '';
+            }
+        }
+
+        function removeFilter(filterId) {
+            const checkbox = document.getElementById(filterId);
+            if (checkbox) {
+                checkbox.checked = false;
+                applyFilters();
+                updateActiveFilters();
+                updateFilterBadge();
+            }
+        }
+
+        function clearAllFilters() {
+            filterCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            applyFilters();
+            updateActiveFilters();
+            updateFilterBadge();
+        }
+
+        function applyFilters() {
+            const activeFilters = {
+                types: [],
+                payload: [],
+                autonomy: []
+            };
+
+            // Robot type filters
+            if (document.getElementById('amr')?.checked) activeFilters.types.push('amr');
+            if (document.getElementById('arms')?.checked) activeFilters.types.push('arm');
+            if (document.getElementById('drones')?.checked) activeFilters.types.push('drone');
+            if (document.getElementById('agv')?.checked) activeFilters.types.push('agv');
+
+            // Payload filters
+            if (document.getElementById('payload-light')?.checked) activeFilters.payload.push('light');
+            if (document.getElementById('payload-medium')?.checked) activeFilters.payload.push('medium');
+            if (document.getElementById('payload-heavy')?.checked) activeFilters.payload.push('heavy');
+            if (document.getElementById('payload-ultra')?.checked) activeFilters.payload.push('ultra');
+
+            // Autonomy filters
+            if (document.getElementById('auto-slam')?.checked) activeFilters.autonomy.push('slam');
+            if (document.getElementById('auto-lidar')?.checked) activeFilters.autonomy.push('lidar');
+            if (document.getElementById('auto-vision')?.checked) activeFilters.autonomy.push('vision');
+            if (document.getElementById('auto-gps')?.checked) activeFilters.autonomy.push('gps');
+
+            console.log('Active filters:', activeFilters);
+
+            let filtered = [...products];
+
+            // Apply type filter
+            if (activeFilters.types.length > 0) {
+                filtered = filtered.filter(p => activeFilters.types.includes(p.type));
+                console.log('After type filter:', filtered.length);
+            }
+
+            // Apply payload filter
+            if (activeFilters.payload.length > 0) {
+                filtered = filtered.filter(p => p.payloadCategory && activeFilters.payload.includes(p.payloadCategory));
+                console.log('After payload filter:', filtered.length);
+            }
+
+            // Apply autonomy filter (skip products without autonomyType like arms)
+            if (activeFilters.autonomy.length > 0) {
+                filtered = filtered.filter(p => p.autonomyType && activeFilters.autonomy.includes(p.autonomyType));
+                console.log('After autonomy filter:', filtered.length);
+            }
+
+            console.log('Final filtered count:', filtered.length);
+            renderProducts(filtered);
+        }
+
+
+        let currentImageIndex = 0;
+        let currentProductImages = [];
+
+        function changeProductImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = currentProductImages.length - 1;
+            if (currentImageIndex >= currentProductImages.length) currentImageIndex = 0;
+            
+            updateDisplayedImage();
+        }
+
+        function selectProductImage(index) {
+            currentImageIndex = index;
+            updateDisplayedImage();
+        }
+
+        function updateDisplayedImage() {
+            const mainImg = document.querySelector('#modalMainImage img');
+            const thumbnails = document.querySelectorAll('.modal-thumbnail');
+            
+            mainImg.src = currentProductImages[currentImageIndex];
+            
+            thumbnails.forEach((thumb, idx) => {
+                thumb.classList.toggle('active', idx === currentImageIndex);
+            });
+        }
+
+        // Modal functions
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            // Initialize image gallery
+            currentProductImages = product.images || [product.image, product.image, product.image, product.image];
+            currentImageIndex = 0;
+
+            const modal = document.getElementById('productModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = product.name;
+
+            modalBody.innerHTML = `
+                <div class="modal-image-section">
+                    <div class="modal-main-image" id="modalMainImage">
+                        <img src="${product.images ? product.images[0] : product.image}" alt="${product.name}" />
+                        <button class="image-nav image-nav-prev" onclick="changeProductImage(-1)">‹</button>
+                        <button class="image-nav image-nav-next" onclick="changeProductImage(1)">›</button>
+                    </div>
+                    <div class="modal-thumbnails" id="modalThumbnails">
+                        ${(product.images || [product.image, product.image, product.image, product.image]).map((img, idx) => `
+                            <div class="modal-thumbnail ${idx === 0 ? 'active' : ''}" onclick="selectProductImage(${idx})">
+                                <img src="${img}" alt="View ${idx + 1}" />
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="modal-details-section">
+                    <div class="vendor-info">
+                        <div class="vendor-logo">${product.emoji}</div>
+                        <div class="vendor-details">
+                            <h3>${product.vendor}</h3>
+                            <div class="vendor-meta">Verified OEM • Enterprise Partner Since 2018</div>
+                        </div>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="price">${product.price}</div>
+                        <div class="price-note">${product.priceNote} price - Volume discounts available</div>
+                        <div class="price-actions">
+                            <button class="btn-quote" onclick="alert('Quote request initiated for ${product.name}')">Get Quote</button>
+                            <button class="btn-contact" onclick="alert('Connecting you with ${product.vendor}')">Contact Vendor</button>
+                        </div>
+                    </div>
+
+                    <div class="rating-detail">
+                        <div class="rating-score">${product.rating}</div>
+                        <div class="rating-breakdown">
+                            <div class="rating-stars-large">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5-Math.floor(product.rating))}</div>
+                            <div class="rating-count">Based on ${product.reviews} verified customer reviews</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Product Overview</h3>
+                        <p>${product.description}</p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Technical Specifications</h3>
+                        <div class="specs-grid">
+                            ${Object.entries(product.specs).map(([key, value]) => `
+                                <div class="spec-item">
+                                    <div class="spec-label">${key}</div>
+                                    <div class="spec-value">${value}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Key Features</h3>
+                        <div class="features-list">
+                            ${product.features.map(feature => `
+                                <div class="feature-item">
+                                    <div class="feature-icon">${feature.icon}</div>
+                                    <div class="feature-content">
+                                        <h4>${feature.title}</h4>
+                                        <p>${feature.desc}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Applications</h3>
+                        <ul>
+                            ${product.applications.map(app => `<li>${app}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Contact Modal Functions
+        let currentProductName = '';
+
+        function openContactModal(productName = '') {
+            currentProductName = productName;
+            const modal = document.getElementById('contactModal');
+            
+            // Rebuild the form with proper values
+            document.getElementById('contactFormContainer').innerHTML = `
+                <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productInterest">Product of Interest</label>
+                        <input type="text" id="productInterest" name="productInterest" value="${productName || 'General Inquiry'}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Questions / Comments</label>
+                        <textarea id="notes" name="notes" placeholder="Tell us about your requirements..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+                        Submit Request
+                    </button>
+                </form>
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        async function submitContactForm(event) {
+            event.preventDefault();
+            console.log('Form submission started');
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                productInterest: document.getElementById('productInterest').value,
+                notes: document.getElementById('notes').value,
+                timestamp: new Date().toISOString()
+            };
+
+            console.log('Form data:', formData);
+
+            // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwszyP62RsxIYsmEXTjMh7YvnPDgQ8AKpZqKRA7ZXx8uBvfMajROeQlkO61WVjspK59/exec';
+            
+            try {
+                // Show loading state
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.disabled = true;
+
+                console.log('Sending to Google Sheets...');
+
+                // Send to Google Sheets
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log('Request sent successfully');
+
+                // Show success message
+                document.getElementById('contactFormContainer').innerHTML = `
+                    <div class="form-success">
+                        <h3 style="margin-bottom: 0.5rem;">✓ Request Submitted Successfully!</h3>
+                        <p style="margin: 0;">Thank you for your interest. Our team will contact you within 24 hours.</p>
+                    </div>
+                `;
+
+                // Close modal after 3 seconds
+                setTimeout(() => {
+                    closeContactModal();
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('There was an error submitting your request. Please try again or contact us directly.');
+                
+                // Reset button
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.textContent = 'Submit Request';
+                    submitBtn.disabled = false;
+                }
+            }
+        }
+
+        // Close contact modal on background click
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+
+        // Update product modal Request Quote button to open contact form
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            // Initialize image gallery
+            currentProductImages = product.images || [product.image, product.image, product.image, product.image];
+            currentImageIndex = 0;
+
+            const modal = document.getElementById('productModal');
+            
+            // Update modal content (existing code)
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="modal-image-section">
+                    <div class="modal-main-image" id="modalMainImage">
+                        <img src="${currentProductImages[0]}" alt="${product.name}" />
+                        <button class="image-nav image-nav-prev" onclick="changeProductImage(-1)">‹</button>
+                        <button class="image-nav image-nav-next" onclick="changeProductImage(1)">›</button>
+                    </div>
+                    <div class="modal-thumbnails" id="modalThumbnails">
+                        ${currentProductImages.map((img, idx) => `
+                            <div class="modal-thumbnail ${idx === 0 ? 'active' : ''}" onclick="selectProductImage(${idx})">
+                                <img src="${img}" alt="View ${idx + 1}" />
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="modal-info-section">
+                    <div class="modal-vendor">${product.vendor}</div>
+                    <h3 class="modal-product-name">${product.emoji} ${product.name}</h3>
+                    
+                    <div class="modal-rating">
+                        <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+                        <span>${product.rating} (${product.reviews} reviews)</span>
+                    </div>
+
+                    <div class="modal-price-section">
+                        <div class="modal-price">${product.price}</div>
+                        <div class="price-note">${product.priceNote}</div>
+                    </div>
+
+                    <div class="modal-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">Payload</span>
+                            <span class="spec-value">${product.specs.payload}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Battery</span>
+                            <span class="spec-value">${product.specs.battery}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Navigation</span>
+                            <span class="spec-value">${product.specs.autonomy}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Max Speed</span>
+                            <span class="spec-value">${product.specs.speed}</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-description">
+                        <h4>Description</h4>
+                        <p>${product.description}</p>
+                    </div>
+
+                    <div class="modal-features">
+                        <h4>Key Features</h4>
+                        <div class="features-grid">
+                            ${product.features.map(f => `
+                                <div class="feature-card">
+                                    <div class="feature-icon">${f.icon}</div>
+                                    <div class="feature-title">${f.title}</div>
+                                    <div class="feature-desc">${f.desc}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="modal-applications">
+                        <h4>Applications</h4>
+                        <div class="application-tags">
+                            ${product.applications.map(app => `
+                                <span class="application-tag">${app}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Update the Request Quote button to pass product name
+            const quoteBtn = modal.querySelector('.modal-footer .btn-primary');
+            quoteBtn.onclick = () => {
+                closeModal();
+                setTimeout(() => openContactModal(product.name), 300);
+            };
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal on background click
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeContactModal();
+            }
+        });
+
+        
+        // Fetch products from database API
+        // let products = []; // Commented out - loaded from API
+        
+        async function loadDatabaseProducts() {
+            try {
+                const response = await fetch('/api/database-robots.json');
+                const databaseProducts = await response.json();
+                products = databaseProducts;
+                console.log('Loaded ' + products.length + ' robots from database');
+                renderProducts();
+            } catch (error) {
+                console.error('Error loading database products:', error);
+                // Fallback to original products if API fails
+                renderProducts();
+            }
+        }
+        
+        // Call this instead of immediate renderProducts
+        loadDatabaseProducts();
+
+    </script>
+</body>
+</html>
