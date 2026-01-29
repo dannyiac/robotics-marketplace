@@ -860,12 +860,12 @@
     "vendor": "FANUC",
     "price": "$38,000",
     "priceNote": "Base",
-    "image": "https://placehold.co/400x300/e8e8e8/666666?text=FANUC+CR-15iA",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_19_placeholder.svg",
     "images": [
-      "https://placehold.co/400x300/e8e8e8/666666?text=FANUC+CR-15iA",
-      "https://placehold.co/400x300/e8e8e8/666666?text=FANUC+CR-15iA",
-      "https://placehold.co/400x300/e8e8e8/666666?text=FANUC+CR-15iA",
-      "https://placehold.co/400x300/e8e8e8/666666?text=FANUC+CR-15iA"
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_19_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_19_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_19_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_19_placeholder.svg"
     ],
     "category": "Robotic Arms",
     "type": "Collaborative Robot",
@@ -974,12 +974,12 @@
     "vendor": "KUKA",
     "price": "$185,000",
     "priceNote": "Base",
-    "image": "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+KR QUANTEC",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_16_placeholder.svg",
     "images": [
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+KR QUANTEC",
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+KR QUANTEC",
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+KR QUANTEC",
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+KR QUANTEC"
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_16_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_16_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_16_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_16_placeholder.svg"
     ],
     "category": "Robotic Arms",
     "type": "Industrial Robot",
@@ -1031,12 +1031,12 @@
     "vendor": "KUKA",
     "price": "$95,000",
     "priceNote": "Base",
-    "image": "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+LBR iiwa 7",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_15_placeholder.svg",
     "images": [
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+LBR iiwa 7",
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+LBR iiwa 7",
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+LBR iiwa 7",
-      "https://placehold.co/400x300/e8e8e8/666666?text=KUKA+LBR iiwa 7"
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_15_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_15_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_15_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_15_placeholder.svg"
     ],
     "category": "Robotic Arms",
     "type": "Sensitive Collaborative Robot",
@@ -1088,12 +1088,12 @@
     "vendor": "Universal Robots",
     "price": "$45,000",
     "priceNote": "Base",
-    "image": "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR10e",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_14_placeholder.svg",
     "images": [
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR10e",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR10e",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR10e",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR10e"
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_14_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_14_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_14_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_14_placeholder.svg"
     ],
     "category": "Robotic Arms",
     "type": "Collaborative Robot",
@@ -1145,12 +1145,12 @@
     "vendor": "Universal Robots",
     "price": "$35,000",
     "priceNote": "Base",
-    "image": "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR5e",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_13_placeholder.svg",
     "images": [
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR5e",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR5e",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR5e",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Universal Robots+UR5e"
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_13_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_13_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_13_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_13_placeholder.svg"
     ],
     "category": "Robotic Arms",
     "type": "Collaborative Robot",
@@ -1202,12 +1202,12 @@
     "vendor": "Yaskawa",
     "price": "$39,500",
     "priceNote": "Base",
-    "image": "https://placehold.co/400x300/e8e8e8/666666?text=Yaskawa+HC10DT",
+    "image": "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_21_placeholder.svg",
     "images": [
-      "https://placehold.co/400x300/e8e8e8/666666?text=Yaskawa+HC10DT",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Yaskawa+HC10DT",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Yaskawa+HC10DT",
-      "https://placehold.co/400x300/e8e8e8/666666?text=Yaskawa+HC10DT"
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_21_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_21_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_21_placeholder.svg",
+      "https://robotics-marketplace-photos.s3.amazonaws.com/placeholders/robotic-arms/robot_21_placeholder.svg"
     ],
     "category": "Robotic Arms",
     "type": "Collaborative Robot",
